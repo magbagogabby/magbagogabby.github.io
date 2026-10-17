@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Threads authorization · Faith In Life</title>
+<style>
+  :root { --cream:#fdfaf4; --ink:#241c15; --ink2:#4a3c2c; --ink3:#6d6152;
+          --gold:#b8862d; --gold2:#8a6420; --hair:#e8dfcb; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--cream); color:var(--ink);
+         font:16px/1.6 Georgia, "Times New Roman", serif; }
+  .band { height:6mm; background:var(--gold); }
+  main { max-width:760px; margin:0 auto; padding:48px 24px 64px; }
+  h1 { font-size:26px; line-height:1.25; margin:0 0 6px; letter-spacing:-.01em; }
+  .kicker { font:600 11px/1.2 ui-sans-serif, system-ui, sans-serif;
+            letter-spacing:.16em; text-transform:uppercase; color:var(--gold2); margin:0 0 18px; }
+  .card { border:1px solid var(--hair); background:#fff; border-radius:6px; padding:20px 22px; margin:22px 0; }
+  .label { font:600 11px/1.2 ui-sans-serif, system-ui, sans-serif; letter-spacing:.12em;
+           text-transform:uppercase; color:var(--ink3); margin:0 0 8px; }
+  textarea { width:100%; min-height:104px; font:12px/1.5 ui-monospace, Menlo, Consolas, monospace;
+             color:var(--ink); background:var(--cream); border:1px solid var(--hair);
+             border-radius:4px; padding:12px; resize:vertical; word-break:break-all; }
+  button { font:600 13px/1 ui-sans-serif, system-ui, sans-serif; padding:11px 18px; margin-top:12px;
+           border:0; border-radius:4px; background:var(--gold); color:#fff; cursor:pointer; }
+  button:hover { background:var(--gold2); }
+  .note { color:var(--ink2); font-size:14px; }
+  .err { color:#8a2b1f; }
+  .ok { color:var(--gold2); font-weight:600; }
+  ol { color:var(--ink2); font-size:15px; padding-left:20px; }
+  code { font:12px/1.4 ui-monospace, Menlo, Consolas, monospace; background:var(--cream);
+         border:1px solid var(--hair); border-radius:3px; padding:1px 4px; }
+  footer { margin-top:36px; padding-top:16px; border-top:1px solid var(--hair);
+           color:var(--ink3); font-size:13px; }
+  a { color:var(--gold2); }
+</style>
+</head>
+<body>
+<div class="band"></div>
+<main>
+  <p class="kicker">Faith In Life · Threads API</p>
+  <h1>Authorization received</h1>
+  <p id="status" class="note">Reading the response…</p>
+
+  <div class="card" id="card" hidden>
+    <p class="label">Copy this — the full address-bar URL</p>
+    <textarea id="full" readonly></textarea>
+    <button id="copy">Copy full URL</button>
+    <p class="note" id="copied" hidden><span class="ok">Copied.</span></p>
+  </div>
+
+  <ol>
+    <li>Copy the <strong>whole URL</strong> above (not just the <code>code</code> value).</li>
+    <li>Run <code>python threads/exchange_code.py</code> in the Faith In Life project and paste it at the prompt.</li>
+    <li>Nothing needs to be shared or emailed — the code is single-use and expires in about an hour.</li>
+  </ol>
+
+  <footer>
+    This page only displays what Meta sent back in the address bar.
+    Faith In Life · <a href="/FaithinLife/">home</a> ·
+    <a href="/FaithinLife/privacy.html">privacy</a>
+  </footer>
+</main>
+<script>
+(function () {
+  var p = new URLSearchParams(location.search);
+  var code = p.get("code");
+  var err = p.get("error");
+  var st = p.get("state");
+  var status = document.getElementById("status");
+  if (err) {
+    status.className = "err";
+    status.textContent = "Meta returned an error instead of a code: " + err +
+      (p.get("error_description") ? " — " + p.get("error_description") : "") +
+      ". Nothing was authorized; start again from threads/gen_auth_url.py.";
+    return;
+  }
+  if (!code) {
+    status.className = "err";
+    status.textContent = "No authorization code in this URL. Open the link printed by " +
+      "threads/gen_auth_url.py, click Allow, and let it redirect here.";
+    return;
+  }
+  status.className = "note";
+  status.innerHTML = '<span class="ok">Code received.</span> Copy the full URL below.';
+  document.getElementById("full").value = location.href;
+  document.getElementById("card").hidden = false;
+  document.getElementById("copy").addEventListener("click", function () {
+    var ta = document.getElementById("full");
+    ta.select();
+    var done = false;
+    try { done = document.execCommand("copy"); } catch (e) { done = false; }
+    if (!done && navigator.clipboard) { navigator.clipboard.writeText(location.href); done = true; }
+    if (done) { document.getElementById("copied").hidden = false; }
+  });
+})();
+</script>
+</body>
+</html>
