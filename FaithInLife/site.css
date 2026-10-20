@@ -216,9 +216,15 @@ body[data-ground="olive"] .folio__cta::after { background: #cfc0a6; }
   max-width: 86rem;
   margin-inline: auto;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(1.5rem, 4vh, 3rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(1.5rem, 3.6vw, 4.5rem);
+  row-gap: clamp(1.5rem, 4vh, 3rem);
 }
+.title__inner > h1,
+.title__inner > .title__lede,
+.title__inner > .title__acts,
+.title__inner > .title__foot { grid-column: 1; }
 
 .title h1 {
   font-family: var(--sc-font-display);
@@ -288,11 +294,13 @@ body[data-ground="olive"] .folio__cta::after { background: #cfc0a6; }
 
 /* seal */
 .seal {
-  position: absolute;
+  position: relative;
   z-index: 1;
-  bottom: clamp(6.5rem, 20vh, 12rem);
-  right: clamp(0.5rem, 3vw, 3rem);
-  width: clamp(12rem, 26vw, 23rem);
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  align-self: center;
+  justify-self: end;
+  width: clamp(14.5rem, 31vw, 31rem);
   aspect-ratio: 1;
   color: var(--fil-gold);
   pointer-events: none;
@@ -309,14 +317,19 @@ body[data-ground="olive"] .folio__cta::after { background: #cfc0a6; }
 }
 .seal img {
   width: 100%; height: 100%; object-fit: contain;
-  opacity: 0; transform: scale(0.985);
+  transform-origin: 50% 50%;
   animation: sealIn 1500ms var(--sc-ease-out) 300ms forwards,
-             sealFloat 11s ease-in-out 1.8s infinite;
+             sealSway 15s ease-in-out 1800ms infinite;
+  will-change: transform;
 }
-@keyframes sealIn { to { opacity: 1; } }
-@keyframes sealFloat {
-  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-  50%      { transform: translate3d(0, -8px, 0) rotate(-1.1deg); }
+@keyframes sealIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: none; }
+}
+/* it never turns its back on you: a two-degree sway, never a full turn */
+@keyframes sealSway {
+  0%, 100% { transform: translate3d(0, -1px, 0) rotate(-2.2deg) scale(1); }
+  50%      { transform: translate3d(0, -7px, 0) rotate(2.2deg) scale(1.014); }
 }
 .seal .ring { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 2200ms var(--sc-ease-out) 400ms forwards; }
 .seal .tick { opacity: 0; animation: rise 700ms ease 1400ms forwards; }
@@ -856,12 +869,15 @@ figure figcaption b {
 
   .sources li { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; }
 
+  .title__inner { grid-template-columns: minmax(0, 1fr); }
   .seal {
-    width: clamp(9.5rem, 38vw, 15rem);
-    top: clamp(4.2rem, 10vh, 6rem);
-    bottom: auto;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: end;
+    width: clamp(10rem, 40vw, 16rem);
   }
-  .title { padding-top: clamp(6.5rem, 17vh, 9rem); }
+  .title__inner > h1 { grid-row: 2; }
+  .title { padding-top: clamp(4.6rem, 9vh, 6rem); }
 }
 
 @media (max-width: 480px) {
@@ -893,7 +909,7 @@ figure figcaption b {
   }
   .rose__hand { transition: none; }
   .ch2__loop { display: none; }
-  .seal, .seal img { animation: none !important; }
+  .seal, .seal img { animation: none !important; transform: none !important; }
   .rose__arc { transition: none; }
   html { scroll-behavior: auto; }
 }
