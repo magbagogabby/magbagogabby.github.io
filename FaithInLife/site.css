@@ -319,7 +319,7 @@ body[data-ground="olive"] .folio__cta::after { background: #cfc0a6; }
   width: 100%; height: 100%; object-fit: contain;
   transform-origin: 50% 50%;
   animation: sealIn 1500ms var(--sc-ease-out) 300ms forwards,
-             sealSway 15s ease-in-out 1800ms infinite;
+             sealSway 9s ease-in-out 1600ms infinite;
   will-change: transform;
 }
 @keyframes sealIn {
@@ -328,9 +328,10 @@ body[data-ground="olive"] .folio__cta::after { background: #cfc0a6; }
 }
 /* it never turns its back on you: a two-degree sway, never a full turn */
 @keyframes sealSway {
-  0%, 100% { transform: translate3d(0, -1px, 0) rotate(-2.2deg) scale(1); }
-  50%      { transform: translate3d(0, -7px, 0) rotate(2.2deg) scale(1.014); }
+  0%, 100% { transform: translate3d(0, 2px, 0) rotate(-3.4deg) scale(1); }
+  50%      { transform: translate3d(0, -10px, 0) rotate(3.4deg) scale(1.02); }
 }
+.seal:hover img { animation-duration: 4.5s; }
 .seal .ring { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 2200ms var(--sc-ease-out) 400ms forwards; }
 .seal .tick { opacity: 0; animation: rise 700ms ease 1400ms forwards; }
 
