@@ -1,0 +1,32 @@
+[build]
+  publish = "."
+  command = ""
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+
+# The site is plain static HTML — no build step, no framework.
+# Deploy target: repo magbagogabby/FaithinLife, branch doc -> https://faithinlife.netlify.app/
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+# Old GitHub Pages links keep working: /FaithInLife/* -> /*
+[[redirects]]
+  from = "/FaithInLife/*"
+  to = "/:splat"
+  status = 301
+  force = false
