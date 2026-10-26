@@ -145,6 +145,7 @@ body[data-ground="paper"] { --folio-ground: #faf3e7; }
 body[data-ground="ink"]   { --folio-ground: #1b1813; }
 body[data-ground="olive"] { --folio-ground: #262c22; }
 .folio a { pointer-events: auto; text-decoration: none; }
+.folio__links { display: flex; align-items: baseline; gap: clamp(0.8rem, 1.6vw, 1.4rem); }
 
 .folio__mark {
   display: inline-flex;
