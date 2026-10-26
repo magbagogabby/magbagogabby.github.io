@@ -44,14 +44,17 @@
 (function(){
   var tabs = document.querySelectorAll('.tab');
   var views = {calendar: document.getElementById('calendar-view'), list: document.getElementById('list-view')};
+  function show(view, scroll){
+    tabs.forEach(function(x){x.classList.toggle('on', x.dataset.view === view)});
+    Object.keys(views).forEach(function(k){views[k].classList.toggle('on', k === view)});
+    if (scroll) window.scrollTo({top: document.querySelector('.title').offsetTop - 20, behavior: 'smooth'});
+  }
   tabs.forEach(function(t){
-    t.addEventListener('click', function(){
-      tabs.forEach(function(x){x.classList.remove('on')});
-      t.classList.add('on');
-      Object.keys(views).forEach(function(k){views[k].classList.toggle('on', k === t.dataset.view)});
-      window.scrollTo({top: document.querySelector('.title').offsetTop - 20, behavior: 'smooth'});
-    });
+    t.addEventListener('click', function(){ show(t.dataset.view, true); });
   });
+  // deep links from the homepage: archive.html#list / #calendar
+  if (/^#list/.test(location.hash)) show('list', false);
+  if (/^#calendar/.test(location.hash)) show('calendar', false);
 })();
 </script>
 </body>
