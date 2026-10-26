@@ -1,12 +1,23 @@
 [build]
   publish = "."
   command = ""
+  # Deploy ONLY when a fresh push actually changes what is served.
+  # `git diff --quiet` exits 0 when the tree is unchanged -> Netlify skips the build.
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':!*.md' ':!.gitignore' ':!netlify.toml'"
 
 [build.environment]
   PYTHON_VERSION = "3.12"
 
 # The site is plain static HTML — no build step, no framework.
 # Deploy target: repo magbagogabby/FaithinLife, branch doc -> https://faithinlife.netlify.app/
+
+# Production deploys come from pushes to `doc` and nowhere else: every other
+# context is told to skip its build, so a branch or PR can never overwrite the live site.
+[context.deploy-preview]
+  ignore = "exit 0"
+
+[context.branch-deploy]
+  ignore = "exit 0"
 
 [[headers]]
   for = "/*"
