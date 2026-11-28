@@ -100,6 +100,9 @@ h1 em{font-style:italic;color:var(--gold)}
 .pill--yt-short:hover,.pill--yt-long:hover{background:#c4302b;border-color:#c4302b}
 .pill--yt-long{letter-spacing:.06em}
 .pill--threads:hover{background:#111;border-color:#111}
+/* a day with more than one package: the marker jumps to the day's list row */
+.pill--more{color:var(--gold);border-style:dashed;letter-spacing:.02em}
+.pill--more:hover{background:var(--gold);border-color:var(--gold);color:var(--paper)}
 
 /* ---------- list ---------- */
 .row{display:grid;grid-template-columns:9.5rem 1fr;gap:1.4rem;padding:1.5rem 0;
@@ -111,6 +114,13 @@ h1 em{font-style:italic;color:var(--gold)}
 .row-body .gos{margin:0 0 .35rem}
 .row-body .topic{font-size:clamp(1.05rem,2.2vw,1.3rem);line-height:1.25;-webkit-line-clamp:unset;display:block}
 .thesis{margin:.4rem 0 .7rem;color:var(--soft);font-size:.92rem;max-width:38rem}
+/* second package, same day: inset under the day it shares, never its own date */
+.also{margin:.9rem 0 0;padding:.85rem 0 0 1rem;border-left:2px solid var(--hair2)}
+.also-kicker{font-family:var(--sans);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 .3rem}
+.also .gos{margin:0 0 .25rem}
+.also-topic{margin:0 0 .55rem;font-size:1rem;line-height:1.25;font-weight:400}
+@media(max-width:640px){.also{padding-left:.75rem}}
 
 /* ---------- footer ---------- */
 .foot{border-top:1px solid var(--hair);padding:2rem var(--gutter) 3rem;max-width:1180px;margin:0 auto;
